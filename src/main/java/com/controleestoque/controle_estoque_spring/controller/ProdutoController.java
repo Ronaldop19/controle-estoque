@@ -38,9 +38,31 @@ public class ProdutoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id){
+    public ResponseEntity<Void> deletarProduto(@PathVariable Long id){
         produtoService.deletar(id);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Produto> atualizarProduto(@PathVariable Long id, @Valid @RequestBody Produto produtoAtualizado){
+
+        Optional<Produto> produtoExistente = produtoService.buscarPorId(id);
+        if (produtoExistente.isEmpty()) {
+            return ResponseEntity.notFound().build(); // Retorna 404 se o produto não existir
+        }
+
+        Produto produto = produtoExistente.get();
+
+        produto.setCodigoSku(produtoAtualizado.getCodigoSku());
+        produto.setNome(produtoAtualizado.getNome());
+        produto.setCategoria(produtoAtualizado.getCategoria());
+        produto.setPreco(produtoAtualizado.getPreco());
+        produto.setQuantidade(produtoAtualizado.getQuantidade());
+        produto.setFornecedor(produtoAtualizado.getFornecedor());
+
+        // Salva e retorna o produto atualizado
+        Produto produtoSalvo = produtoService.salvar(produto);
+        return ResponseEntity.ok(produtoSalvo);
     }
 }
