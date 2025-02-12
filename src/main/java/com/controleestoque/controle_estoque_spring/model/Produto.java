@@ -65,7 +65,8 @@ public class Produto {
         return fornecedor;
     }
 
-    public Produto(String codigoSku, String nome, String categoria, BigDecimal preco, int quantidade, String fornecedor) {
+    public Produto(Long id, String codigoSku, String nome, String categoria, BigDecimal preco, int quantidade, String fornecedor) {
+        this.id = id;
         this.codigoSku = codigoSku;
         this.nome = nome;
         this.categoria = categoria;
@@ -87,5 +88,8 @@ public class Produto {
     private int quantidade;
 
     private String fornecedor;
-    
+
+    public Long getId() {
+        return id;
+    }
 }
